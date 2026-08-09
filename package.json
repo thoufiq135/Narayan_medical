@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.3",
     "minio": "^8.0.7",
     "multer": "^2.2.0",
+    "node-telegram-bot-api": "^1.2.0",
     "pg": "^8.22.0",
     "redis": "^6.2.0"
   }
