@@ -7,6 +7,7 @@ const getData=require("./getData")
 const {minioClient,connectMinio}=require("./minio")
 const rateLimiter=require("./rateLimiter")
 const {connectDB,pool}=require("./connectdb")
+
 const { connectRedis, redisClient }=require("./redisConnect")
 app.use(express.json())
 connectDB()
@@ -15,6 +16,7 @@ connectMinio()
 app.use("/addData",addData)
 app.use("/trigger",trigger)
 app.use("/getData",getData)
+
 app.get("/testServer",(req,res)=>{
 if(!pool||!redisClient||!minioClient){
 return res.status(500).json({message:"internal server error"})
