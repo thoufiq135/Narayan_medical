@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: narayana_backend
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      PORT: 3000
+      IP: "100.117.158.50"
+      BOT_TOKEN: "8822627758:AAH4m8YKhzmL4G96fXC9s83XIC0cFZkeRBY"
+      CHAT_ID: "7953722466"
+
+    restart: unless-stopped
