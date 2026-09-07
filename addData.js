@@ -6,7 +6,7 @@ const path=require("path")
 const { pool } = require("./connectdb")
 const router=express.Router()
 const bot=require("./teligram")
-const target={}
+const target={id:"7"}
 router.post("/emp-data",upload.single("image"),async(req,res)=>{
 try{
      const { id, name, department } = req.body;
@@ -122,7 +122,7 @@ console.log(req.body);
 
         const { employee_id, time, type, cam } = req.body;
 
-        if (!employee_id || !time || !type || !cam) {
+        if (!employee_id || !time  || !cam) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -148,7 +148,8 @@ console.log(req.body);
                 message: "Employee not found"
             });
         }
-
+        console.log(employee.rows[0])
+console.log(target.id)
         // Check target employee
         if (target.id == employee_id) {
 
@@ -161,13 +162,12 @@ console.log(req.body);
                 location = "N.G.O Colony";
                 camera = "002";
             } else {
-                chatId = "5089797432";
+                chatId = "755465060" ;
                 location = "B.V Nagar";
                 camera = "001";
             }
-
-            // SEND IMAGE DIRECTLY TO TELEGRAM
-            await bot.sendPhoto(
+  
+                await bot.sendPhoto(
                 chatId,
                 req.file.buffer,
                 {
@@ -185,7 +185,10 @@ console.log(req.body);
             );
 
             console.log("Telegram image sent successfully");
-        }
+     
+             
+            // SEND IMAGE DIRECTLY TO TELEGRAM
+       
 // const emp = employee.rows[0];
 //         // Store attendance
 //         await pool.query(
@@ -205,7 +208,7 @@ console.log(req.body);
             message: "alert send succesfully"
         });
 
-    } catch (e) {
+    }} catch (e) {
         console.log(e);
 
         return res.status(500).json({
@@ -213,6 +216,7 @@ console.log(req.body);
             message: "Internal Server Error"
         });
     }
+    
 });
 router.post("/target",async(req,res)=>{
     const {id}=req.body
