@@ -6,6 +6,7 @@ const path=require("path")
 const { pool } = require("./connectdb")
 const router=express.Router()
 const bot=require("./teligram")
+const target={}
 router.post("/emp-data",upload.single("image"),async(req,res)=>{
 try{
      const { id, name, department } = req.body;
@@ -115,15 +116,23 @@ router.post("/past-data", upload.single("image"), async (req, res) => {
         });
     }
 });
-router.post("/known-data", async (req, res) => {
+router.post("/known-data",upload.single("image"), async (req, res) => {
     try {
-console.log(req.body)
+console.log(req.body);
+
         const { employee_id, time, type, cam } = req.body;
 
         if (!employee_id || !time || !type || !cam) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
+            });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "Image is required"
             });
         }
 
@@ -139,23 +148,61 @@ console.log(req.body)
                 message: "Employee not found"
             });
         }
-const emp = employee.rows[0];
-        // Store attendance
-        await pool.query(
-            `INSERT INTO known_faces
-            (emp_id, captured_at, meal_type, camera_id)
-            VALUES ($1, $2, $3, $4)`,
-            [
-                emp.id,
-                time,
-                type,
-                cam
-            ]
-        );
+
+        // Check target employee
+        if (target.id == employee_id) {
+
+            let chatId;
+            let location;
+            let camera;
+
+            if (cam !== "bv") {
+                chatId = process.env.CHAT_ID;
+                location = "N.G.O Colony";
+                camera = "002";
+            } else {
+                chatId = "5089797432";
+                location = "B.V Nagar";
+                camera = "001";
+            }
+
+            // SEND IMAGE DIRECTLY TO TELEGRAM
+            await bot.sendPhoto(
+                chatId,
+                req.file.buffer,
+                {
+                    caption: `⚠️ Target face detected
+
+📍 Location: ${location}
+📷 Camera: ${camera}
+🕒 Time: ${time}
+🆔 Employee ID: ${employee_id}`
+                },
+                {
+                    filename: req.file.originalname,
+                    contentType: req.file.mimetype
+                }
+            );
+
+            console.log("Telegram image sent successfully");
+        }
+// const emp = employee.rows[0];
+//         // Store attendance
+//         await pool.query(
+//             `INSERT INTO known_faces
+//             (emp_id, captured_at, meal_type, camera_id)
+//             VALUES ($1, $2, $3, $4)`,
+//             [
+//                 emp.id,
+//                 time,
+//                 type,
+//                 cam
+//             ]
+//         );
 
         return res.status(201).json({
             success: true,
-            message: "Known face stored successfully"
+            message: "alert send succesfully"
         });
 
     } catch (e) {
@@ -167,4 +214,9 @@ const emp = employee.rows[0];
         });
     }
 });
+router.post("/target",async(req,res)=>{
+    const {id}=req.body
+    target.id={id}
+    res.status(200).json({message:"target locked 🔒"})
+})
 module.exports=router
