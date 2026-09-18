@@ -149,66 +149,66 @@ console.log(req.body);
             });
         }
         console.log(employee.rows[0])
-console.log(target.id)
-        // Check target employee
-        if (target.id == employee_id) {
+// console.log(target.id)
+//         // Check target employee
+//         if (target.id == employee_id) {
 
-            let chatId;
-            let location;
-            let camera;
+//             let chatId;
+//             let location;
+//             let camera;
 
-            if (cam !== "bv") {
-                chatId = process.env.CHAT_ID;
-                location = "N.G.O Colony";
-                camera = "002";
-            } else {
-                chatId = "755465060" ;
-                location = "B.V Nagar";
-                camera = "001";
-            }
+//             if (cam !== "bv") {
+//                 chatId = process.env.CHAT_ID;
+//                 location = "N.G.O Colony";
+//                 camera = "002";
+//             } else {
+//                 chatId = "755465060" ;
+//                 location = "B.V Nagar";
+//                 camera = "001";
+//             }
   
-                await bot.sendPhoto(
-                chatId,
-                req.file.buffer,
-                {
-                    caption: `⚠️ Target face detected
+//                 await bot.sendPhoto(
+//                 chatId,
+//                 req.file.buffer,
+//                 {
+//                     caption: `⚠️ Target face detected
 
-📍 Location: ${location}
-📷 Camera: ${camera}
-🕒 Time: ${time}
-🆔 Employee ID: ${employee_id}`
-                },
-                {
-                    filename: req.file.originalname,
-                    contentType: req.file.mimetype
-                }
-            );
+// 📍 Location: ${location}
+// 📷 Camera: ${camera}
+// 🕒 Time: ${time}
+// 🆔 Employee ID: ${employee_id}`
+//                 },
+//                 {
+//                     filename: req.file.originalname,
+//                     contentType: req.file.mimetype
+//                 }
+//             );
 
-            console.log("Telegram image sent successfully");
+//             console.log("Telegram image sent successfully");
      
              
             // SEND IMAGE DIRECTLY TO TELEGRAM
        
-// const emp = employee.rows[0];
-//         // Store attendance
-//         await pool.query(
-//             `INSERT INTO known_faces
-//             (emp_id, captured_at, meal_type, camera_id)
-//             VALUES ($1, $2, $3, $4)`,
-//             [
-//                 emp.id,
-//                 time,
-//                 type,
-//                 cam
-//             ]
-//         );
+const emp = employee.rows[0];
+        // Store attendance
+        await pool.query(
+            `INSERT INTO known_faces
+            (emp_id, captured_at, meal_type, camera_id)
+            VALUES ($1, $2, $3, $4)`,
+            [
+                emp.id,
+                time,
+                type,
+                cam
+            ]
+        );
 
         return res.status(201).json({
             success: true,
             message: "alert send succesfully"
         });
 
-    }} catch (e) {
+    } catch (e) {
         console.log(e);
 
         return res.status(500).json({
