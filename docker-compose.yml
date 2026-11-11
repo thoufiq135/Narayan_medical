@@ -12,7 +12,7 @@ services:
     environment:
       PORT: 3000
       IP: "100.117.158.50"
-      BOT_TOKEN: "8822627758:AAH4m8YKhzmL4G96fXC9s83XIC0cFZkeRBY"
-      CHAT_ID: "7953722466"
+      BOT_TOKEN: "8867390021:AAG_kJfs1s4omFu4EpNzcccvRqwkz7Py2IQ"
+      CHAT_ID: "1237875179"
 
     restart: unless-stopped
