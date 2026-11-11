@@ -10,6 +10,9 @@ const {connectDB,pool}=require("./connectdb")
 
 const { connectRedis, redisClient }=require("./redisConnect")
 app.use(express.json())
+app.use(cors({
+    origin:"*"
+}))
 connectDB()
 connectRedis()
 connectMinio()
