@@ -4,6 +4,7 @@ const{minioClient,connectMinio}=require("./minio")
 const {connectDB,pool}=require("./connectdb")
 router.get("/known-data", async (req, res) => {
     try {
+        console.log("fetching knowndata")
 
         const { date, type, page = 1 } = req.query;
 
@@ -47,11 +48,11 @@ router.get("/known-data", async (req, res) => {
         const totalRecords = parseInt(
             countResult.rows[0].total
         );
-
+console.log("total records=",totalRecords)
         const totalPages = Math.ceil(
             totalRecords / limit
         );
-
+console.log("total pages=",totalPages)
         // Get current page
         const dataQuery = `
             SELECT
@@ -98,7 +99,7 @@ router.get("/known-data", async (req, res) => {
                 };
             })
         );
-
+console.log(data)
         return res.status(200).json({
             success: true,
 
